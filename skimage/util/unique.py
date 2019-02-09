@@ -44,7 +44,8 @@ def unique_rows(ar):
     # np.unique() finds identical items in a raveled array. To make it
     # see each row as a single item, we create a view of each row as a
     # byte string of length itemsize times number of columns in `ar`
-    ar_row_view = ar.view('|S%d' % (ar.itemsize * ar.shape[1]))
+    dt = np.dtype([("values", ar.dtype, ar.shape[1:])])
+    ar_row_view = ar.view(dt)
     _, unique_row_indices = np.unique(ar_row_view, return_index=True)
     ar_out = ar[unique_row_indices]
     return ar_out
